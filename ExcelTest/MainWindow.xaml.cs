@@ -31,5 +31,11 @@ namespace ExcelTest
             ExcelExp.InitiallizedWrokBook(ConfigurationManager.AppSettings["path"]);
             ExcelExp.ConvertToDataTable();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ExcelExp.InitiallizedWrokBook(ConfigurationManager.AppSettings["samplePath"]);
+            ExcelExp.ExpToXls();
+        }
     }
 }

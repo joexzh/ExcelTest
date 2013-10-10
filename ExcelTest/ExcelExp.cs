@@ -13,6 +13,7 @@ namespace ExcelTest
     public static class ExcelExp
     {
         static HSSFWorkbook hssfWorkbook;
+        static DataTable dt = new DataTable();
 
         public static void InitiallizedWrokBook(string path)
         {
@@ -22,11 +23,13 @@ namespace ExcelTest
             }
         }
 
+        //public static void Convet
+
         public static void ConvertToDataTable()
         {
             var sheet = hssfWorkbook.GetSheetAt(0);
             var rows = sheet.GetRowEnumerator();
-            DataTable dt = new DataTable();
+            dt = new DataTable();
             for (int j = 0; j < 5; j++)
             {
                 dt.Columns.Add(Convert.ToChar((int)'A' + j).ToString());
@@ -49,6 +52,51 @@ namespace ExcelTest
                 }
                 dt.Rows.Add(dr);
             }
+        }
+
+        public static void ExpToXls()
+        {
+            var sheet1 = hssfWorkbook.GetSheetAt(0);
+            sheet1.GetRow(1).GetCell(1).SetCellValue(200020);
+            sheet1.GetRow(2).GetCell(1).SetCellValue(200021);
+            sheet1.GetRow(3).GetCell(1).SetCellValue(200022);
+            sheet1.GetRow(4).GetCell(1).SetCellValue(200023);
+            sheet1.GetRow(5).GetCell(1).SetCellValue(200024);
+            sheet1.GetRow(6).GetCell(1).SetCellValue(200025);
+            sheet1.GetRow(7).GetCell(1).SetCellValue(200026);
+            sheet1.GetRow(8).GetCell(1).SetCellValue(200027);
+            sheet1.GetRow(9).GetCell(1).SetCellValue(200028);
+            sheet1.GetRow(10).GetCell(1).SetCellValue(200029);
+            sheet1.GetRow(11).GetCell(1).SetCellValue(200030);
+            sheet1.GetRow(12).GetCell(1).SetCellValue(200031);
+
+            sheet1.ForceFormulaRecalculation = true;
+
+            FileStream fs = new FileStream(@"e:\ExpToXls.xls", FileMode.Create);
+            hssfWorkbook.Write(fs);
+            fs.Close();
+        }
+
+        public static void CreateSheetAndExp(DataTable dt)
+        {
+            hssfWorkbook = new HSSFWorkbook();
+            var sheet = hssfWorkbook.CreateSheet("sheet1");
+            var cellStyle = hssfWorkbook.CreateCellStyle();
+            cellStyle.DataFormat = HSSFDataFormat.GetBuiltinFormat("0.00");
+
+            var stringStyle = hssfWorkbook.CreateCellStyle();
+            stringStyle.VerticalAlignment = VerticalAlignment.CENTER;
+
+            int columnCount = dt.Columns.Count;
+            int[] arrColWidth = new int[columnCount];
+            int width = 10;
+
+            foreach (DataColumn item in dt.Columns)
+            {
+                arrColWidth[item.Ordinal] = width;
+            }
+
+
         }
     }
 }
